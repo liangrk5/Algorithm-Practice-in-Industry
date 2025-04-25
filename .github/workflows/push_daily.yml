@@ -13,10 +13,10 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       
       - name: Set up Python 3.9
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v2
         with:
           python-version: '3.9'
       
@@ -26,7 +26,7 @@ jobs:
           pip install requests tqdm google-generativeai openai
           
       - name: Cache arxiv.json
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
           path: arxiv.json
           key: ${{ runner.os }}-arxiv-data-${{ github.run_id }}
@@ -54,7 +54,7 @@ jobs:
           
       - name: Save updated arxiv.json
         if: always()  # 即使上一步失败也保存结果
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: arxiv-data
           path: arxiv.json
