@@ -85,6 +85,33 @@ class CaiyunClient(ModelClient):
             return ['' for _ in source]
         return ret
 
+class GeminiClient(ModelClient):
+    def __init__(self, api_key):
+        import google.generativeai as genai
+        self.genai = genai
+        genai.configure(api_key=api_key)
+        self.model = genai.GenerativeModel('gemini-pro')
+
+    def call(self, source, system_prompt=None, temperature=1.0):
+        if system_prompt:
+            prompt = f"{system_prompt['content']}\n\n{source}"
+        else:
+            prompt = source
+            
+        try:
+            response = self.model.generate_content(prompt, temperature=temperature)
+            return response.text
+        except Exception as e:
+            print(f"Gemini API调用失败: {e}")
+            return None
+        
+    def translate(self, source, system_prompt=None, temperature=1.0):
+        translations = []
+        for s in source:
+            response = self.retry_call(s, system_prompt, temperature)
+            translations.append(response if response is not None else '')
+        return translations
+
 def init_model_client():
     model_type = os.environ.get("MODEL_TYPE", "DeepSeek")
     if model_type == "DeepSeek":
@@ -95,6 +122,11 @@ def init_model_client():
         api_key = os.environ.get("CAIYUN_TOKEN", None)
         base_url = "http://api.interpreter.caiyunai.com/v1/translator"
         return CaiyunClient(api_key=api_key, base_url=base_url)
+    elif model_type == "Gemini":
+        api_key = os.environ.get("GEMINI_API_KEY", None)
+        if api_key is None:
+            raise ValueError("未设置GEMINI_API_KEY环境变量")
+        return GeminiClient(api_key=api_key)
     else:
         raise ValueError(f"未定义的模型类型: {model_type}")
 
