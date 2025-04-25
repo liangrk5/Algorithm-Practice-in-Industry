@@ -1,7 +1,7 @@
 name: Daily ArXiv Search-Ads-Rec Papers
 
 env:
-  PYTHON_VERSION: "3.8" # set this to the Python version to use
+  PYTHON_VERSION: "3.12" # set this to the Python version to use
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 on:
