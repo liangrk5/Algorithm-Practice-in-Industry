@@ -13,7 +13,11 @@ class GeminiAssessor:
     
     def call(self, prompt, temperature=1.0):
         try:
-            response = self.model.generate_content(prompt, temperature=temperature)
+            # Fix: Use generation_config parameter instead of direct temperature parameter
+            response = self.model.generate_content(
+                prompt,
+                generation_config={"temperature": temperature}
+            )
             return response.text
         except Exception as e:
             print(f"Gemini API调用失败: {e}")
