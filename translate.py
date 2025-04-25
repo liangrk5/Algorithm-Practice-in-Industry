@@ -90,7 +90,7 @@ class GeminiClient(ModelClient):
         import google.generativeai as genai
         self.genai = genai
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-pro')
+        self.model = genai.GenerativeModel('gemini-2.5-pro-exp-03-25')
 
     def call(self, source, system_prompt=None, temperature=1.0):
         if system_prompt:

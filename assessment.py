@@ -9,9 +9,9 @@ class GeminiAssessor:
         import google.generativeai as genai
         self.genai = genai
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-pro')
+        self.model = genai.GenerativeModel('gemini-2.5-pro-exp-03-25')
     
-    def call(self, prompt, temperature=0.2):
+    def call(self, prompt, temperature=1.0):
         try:
             response = self.model.generate_content(prompt, temperature=temperature)
             return response.text
