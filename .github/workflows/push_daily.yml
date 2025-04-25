@@ -37,7 +37,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests tqdm google-generativeai openai
+          pip install requests tqdm openai
+          pip install -q -U google-generativeai
 
       - name: Create initial arxiv.json if needed
         run: |
